@@ -34,9 +34,9 @@ services:
      environment:
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
      volumes:
-      - './filebeat.yml:/usr/share/filebeat/filebeat.yml:ro'
-      
+      - './ops/config/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro'
       - './var/filebeat/data:/usr/share/filebeat/data'
+      - './var/log/mysql:/var/log/mysql'
       - '/var/lib/docker/containers/:/var/lib/docker/containers/:ro'
       - '/proc:/hostfs/proc:ro'
       - '/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro'
