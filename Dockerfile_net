@@ -1,0 +1,23 @@
+#La imagen incial es la que contiene el SDK
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+
+#Expornemos los puestos HTTP y HTTPS
+EXPOSE 80
+EXPOSE 443
+
+#Creamos un directorio de codigo
+WORKDIR /app
+
+#Copiamos el proyecto y restauramos
+COPY *.csproj ./
+RUN dotnet restore
+
+#Copiamos todo y compilamos
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+#Creamos la carpeta de aplicacion, copiamos la salida y lanzamos la aplicacion
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+WORKDIR /app
+COPY --from=build-env /app/out .
+ENTRYPOINT ["dotnet", "ClubNatacion.Api.dll"]	
